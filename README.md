@@ -16,6 +16,8 @@ step3_2_lora_submission.ipynb와 step3_2_lora_training.ipynb는 모델을 따로
 2. lora로 fine-tuning하면 결과 파일들이 만들어집니다. 해당 파일들을 폴더로 만들어서 업로드합니다.
 3. 기존 모델인 deberta-v3-small 모델 추가
 4. calibration하는 부분을 추가하기는 하였는데 성능 증가에 도움이 되는지 까지는 확인하지 못했습니다.
+   <img src='img.png'>
+   이런 식으로 submission 할 때 모델을 업로드한 후에 submission을 수행합니다.
 
 ### 했던 일
 
