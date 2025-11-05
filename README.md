@@ -7,8 +7,7 @@
 | **Course** | CS 53744 Machine Learning Project |
 | **Task** | Multiclass classification to predict human preference (A win, B win, Tie) for LLM responses. |
 | **Dataset** | Kaggle Competition - LLM Classification Finetuning |
-| **Evaluation Metric** | Log Loss |
-| **Due Date** | 11:59 PM, November 6, 2025 |
+| **Evaluation Metric** | Log Loss, accuracy score |
 | **Final Model** | **Hybrid Stacking Classifier** (MiniLM Embeddings + Scaled Lexical Features) |
 
 -----
@@ -17,9 +16,9 @@
 
 | Role | Name | GitHub ID |
 | :--- | :--- | :--- |
-| Member | \[박원규] | `[keiro23]` |
-| Member | \[이유정] | `[yousrchive]` |
-| Member | \[정승환] | `[whan0767]` |
+| Member | \박원규 | `@keiro23` |
+| Member | \이유정 | `@yousrchive` |
+| Member | \정승환 | `@whan0767` |
 
 -----
 
