@@ -2,3 +2,5 @@
 dataset/*.csv
 ._DS_Storenotebooks/*.npz
 notebooks/*.csv
+notebooks/*.npz
+notebooks/*.csv
