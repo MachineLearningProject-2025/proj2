@@ -1,14 +1,18 @@
-# 🤖 MLP Team Project 2: Predicting Human Preferences for LLM Response Enhancement
+# [MLP Project 2] Predicting Human Preferences for LLM Response Enhancement
 
 ## 📌 1. Project Overview
 
-| Detail | Description |
-| :--- | :--- |
-| **Course** | CS 53744 Machine Learning Project |
-| **Task** | Multiclass classification to predict human preference (A win, B win, Tie) for LLM responses. |
-| **Dataset** | Kaggle Competition - LLM Classification Finetuning |
-| **Evaluation Metric** | Log Loss, accuracy score |
-| **Final Model** | **Hybrid Stacking Classifier** (MiniLM Embeddings + Scaled Lexical Features) |
+| Detail                | Description                                                                                                                                                                                                           |
+| :-------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Course**            | CS 53744 Machine Learning Project                                                                                                                                                                                     |
+| **Task**              | Multiclass classification to predict **human preference** between two LLM responses (*A win*, *B win*, *Tie*).                                                                                                        |
+| **Dataset**           | [Kaggle Competition – LLM Classification Finetuning](https://www.kaggle.com/competitions/llm-classification-finetuning)                                                                                               |
+| **Goal**              | Build models that approximate **human judgment** in pairwise response evaluation through lexical, semantic, and contextual modeling.                                                                                  |
+| **Evaluation Metric** | Log Loss (Kaggle official), Accuracy, Macro F1                                                                                                                                                                        |
+| **Final Model**       | **DeBERTa-v3-small + LoRA Fine-Tuning + Isotonic Calibration**                                                                                                                                                        |
+| **Baseline Models**   | Logistic Regression (Lexical only), SentenceTransformer all-MiniLM-L6-v2 (Semantic only), Hybrid Stacking (Lexical + Semantic)                                                                                        |
+| **Key Insight**       | While hybrid ensembling achieved higher raw accuracy, the **DeBERTa + LoRA model** provided more balanced probability calibration and superior performance in **Tie prediction**, reflecting human-aligned reasoning. |
+
 
 -----
 
@@ -16,21 +20,38 @@
 
 | Role | Name | GitHub ID |
 | :--- | :--- | :--- |
-| Member | \박원규 | `@keiro23` |
-| Member | \이유정 | `@yousrchive` |
-| Member | \정승환 | `@whan0767` |
+| Member | 박원규 | `@keiro23` |
+| Member | 이유정 | `@yousrchive` |
+| Member | 정승환 | `@whan0767` |
 
 -----
 
 ## 🏆 3. Final Performance Summary
 
-The final model utilizes a combination of difference-based **lexical features** and **Sentence Transformer embeddings** to achieve a robust prediction.
+The final submitted model is based on **DeBERTa-v3-small** fine-tuned with **LoRA (Low-Rank Adaptation)** and post-processed through **Isotonic Regression calibration**.
+This setup enables **token-level contextual comparison** between paired responses while preserving computational efficiency in the no-internet Kaggle GPU environment.
 
-| Metric | Value | Note |
-| :--- | :--- | :--- |
-| **Kaggle Public Score** | $\text{[Final Log Loss Value]}$ | Screenshot provided in the PDF Report. |
-| **Validation Log Loss** | $\text{[Validation Log Loss Value]}$ | Achieved via Grid Search on 20% validation split. |
-| **Key Techniques** | MiniLM-L6-v2 Embeddings, Feature Scaling (Robust/Standard), Stacking Ensemble (LR, RF, LGBM). |
+| Metric                     | Value                                              | Note                                           |
+| :------------------------- | :------------------------------------------------- | :--------------------------------------------- |
+| **Kaggle Public Log Loss** | **1.09**                                           | Final submission score on Kaggle leaderboard   |
+| **Validation Accuracy**    | **0.42**                                           | Evaluated on 20% stratified validation split   |
+| **Validation Macro F1**    | **0.42**                                           | Balanced across A-win, B-win, and Tie          |
+| **Calibration Gain**       | **≈ +10% relative improvement in accuracy**        | Achieved through post-hoc isotonic calibration |
+| **Final Model**            | **DeBERTa-v3-small + LoRA + Isotonic Calibration** | Fine-tuned checkpoint `checkpoint-22992`       |
+
+**Key Strengths:**
+
+* **Improved Tie recognition** through probabilistic calibration and contextual understanding
+* **Lightweight training** using LoRA — only low-rank attention weights updated
+* **Fully reproducible** in Kaggle’s no-internet environment (pre-mounted datasets and model weights)
+* **Human-aligned reasoning:** prioritizes balanced, context-aware prediction rather than lexical bias
+
+**Notes:**
+Although the Hybrid Stacking model achieved slightly higher raw validation accuracy (0.48),
+the DeBERTa + LoRA model exhibited superior alignment with human judgment,
+especially in **contextually equivalent (Tie)** cases.
+This makes it a more robust and scalable final model for preference modeling tasks.
+
 
 -----
 
