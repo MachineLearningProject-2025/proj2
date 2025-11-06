@@ -1,0 +1,10 @@
+pandas
+numpy
+scikit-learn
+lightgbm
+sentence-transformers
+nltk
+torch
+datasets
+transformers
+peft

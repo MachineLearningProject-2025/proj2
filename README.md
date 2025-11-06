@@ -36,7 +36,7 @@ The final model utilizes a combination of difference-based **lexical features** 
 
 ## ⚙️ 4. How to Reproduce Results
 
-This guide provides the steps to reproduce the final model training and generate the submission file using the provided Python modules.
+This guide provides the steps to reproduce the results for the two final models.
 
 ### 4.1. Environment Setup & Dependencies
 
@@ -45,9 +45,15 @@ This guide provides the steps to reproduce the final model training and generate
     python -m venv .venv
     source .venv/bin/activate  # Linux/macOS
     ```
-2.  **Install Required Packages:** Install all dependencies listed in `requirements.txt`.
+2.  **Install Required Packages:** Install all dependencies from the centralized `requirements.txt` file in the project root.
     ```bash
     pip install -r requirements.txt
+    ```
+3.  **Download NLTK Data:** Some lexical features depend on NLTK. Run this command in a Python interpreter to download the necessary data:
+    ```python
+    import nltk
+    nltk.download('punkt')
+    nltk.download('averaged_perceptron_tagger')
     ```
 
 ### 4.2. Data Preparation
@@ -55,31 +61,39 @@ This guide provides the steps to reproduce the final model training and generate
 1.  **Download Files:** Obtain the three CSV files from the Kaggle competition page.
 2.  **Place Data:** Save the downloaded files (`train.csv`, `test.csv`, `sample_submission.csv`) into the **`dataset/`** folder within the `PROJ2` root directory.
 
-### 4.3. Execution Pipeline
+### 4.3. Model 1: Hybrid Stacking Classifier
 
-The entire workflow is managed by `main.py`, which orchestrates feature engineering, embedding generation, model training, and prediction.
+This model combines lexical features and sentence embeddings. The entire workflow is managed by `main.py`.
 
-1.  **Change Directory:** Navigate to the folder containing the main execution script (`main.py`) to ensure relative paths are correctly resolved.
+1.  **Change Directory:** Navigate to the script's location.
     ```bash
-    cd notebook
+    cd model/model_hybrid_stacking
     ```
-2.  **Create Submission Folder:** (If it doesn't exist yet)
-    ```bash
-    mkdir ../submission
-    ```
-3.  **Run Main Script:** Execute the full pipeline. **Note:** This step involves downloading the MiniLM model and running Grid Search, which may take significant time.
+2.  **Run Main Script:** Execute the full pipeline. This will generate a submission file in the same directory.
     ```bash
     python main.py
     ```
+3.  **Output:** The script saves predictions to `submission.csv`.
 
-### 4.4. Pipeline Workflow
+### 4.4. Model 2: DeBERTa with LoRA Fine-Tuning
 
-The code is modularized for clarity and reproducibility:
+This model fine-tunes a `DeBERTa-v3-small` model using LoRA. The process involves two stages: training and prediction.
 
-  * **`data_loader.py`**: Handles CSV loading and initial target variable creation.
-  * **`feature_engineering.py`**: Calculates difference-based features (e.g., `len_diff`, `punc_diff`, `lexical_div_diff`, keyword presence) and applies a **ColumnTransformer** for feature scaling.
-  * **`model_trainer.py`**: Generates **`all-MiniLM-L6-v2`** embeddings for all Prompt+Response pairs, combines them with the scaled tabular features, and trains the **Stacking Classifier** (with internal $\text{3-Fold}$ cross-validation and hyperparameter search).
-  * **Output**: The script saves the final predictions to **`../submission/final_submission.csv`**.
+1.  **Change Directory:** Navigate to the scripts' location.
+    ```bash
+    cd model/model_derberta_lora
+    ```
+2.  **Stage 1: Train the Model:**
+    Execute the training script. This will fine-tune the model and save the LoRA adapter in the `results_lora_strategic/` directory.
+    ```bash
+    python train.py
+    ```
+3.  **Stage 2: Generate Predictions:**
+    After training is complete, run the prediction script. This uses the trained LoRA weights and generates a submission file.
+    ```bash
+    python predict.py
+    ```
+4.  **Output:** The script saves predictions to `submission.csv`.
 
 -----
 
@@ -90,14 +104,17 @@ PROJ2/
 ├── dataset/                     # Input Data Location
 │   ├── train.csv
 │   └── test.csv
-├── submission/                  # Output Submission File Location
-│   └── final_submission.csv
-├── notebook/                    # Main Code Modules
-│   ├── **data_loader.py**
-│   ├── **feature_engineering.py**
-│   ├── **model_trainer.py**
-│   └── **main.py** # 👈 Start the execution here
+├── model/
+│   ├── model_derberta_lora/     # DeBERTa LoRA Model
+│   │   ├── train.py
+│   │   ├── predict.py
+│   │   ├── config.py
+│   │   └── ...
+│   └── model_hybrid_stacking/   # Hybrid Stacking Model
+│       ├── main.py
+│       ├── model_trainer.py
+│       └── ...
 ├── experiments/                 # Jupyter Notebooks for Intermediate Steps
 ├── .venv/                       # Python Virtual Environment
-└── **requirements.txt** # All Python Dependencies
+└── requirements.txt             # All Python Dependencies
 ```
