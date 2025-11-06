@@ -3,7 +3,7 @@
 import pandas as pd
 import numpy as np
 
-def load_data(data_dir='../dataset'):
+def load_data(data_dir='.../dataset'):
     """
     Train, Test, Submission 파일을 로드하고 Target 변수 (Label)를 생성합니다.
     """
