@@ -19,7 +19,7 @@ def main():
     print("🚀 Starting LLM Preference Prediction Project Workflow...")
     
     # 1. 데이터 로드
-    train_df, test_df, submission_df = load_data(data_dir='.../dataset')
+    train_df, test_df, submission_df = load_data(data_dir='../../dataset')
     
     # 2. 특징 추출
     train_df = extract_features(train_df)
@@ -73,7 +73,7 @@ def main():
     submission_df['score_b'] = y_test_prob[:, 1]
     submission_df['score_c'] = y_test_prob[:, 2] # Tie
     
-    submission_path = '.../submission/final_submission.csv'
+    submission_path = '../../submission/final_submission.csv'
     submission_df.to_csv(submission_path, index=False)
     print(f"   Submission file saved to: {submission_path}")
 
