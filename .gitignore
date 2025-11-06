@@ -6,3 +6,5 @@ notebooks/*.npz
 notebooks/*.csv
 notebooks/*.npz
 notebooks/*.csv
+code/*.csv
+code/*.npz
