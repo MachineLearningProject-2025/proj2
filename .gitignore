@@ -1,5 +1,5 @@
 /.ipynb_checkpoints
-dataset/*.csv
+dataset/train.csv
 ._DS_Storenotebooks/*.npz
 notebooks/*.csv
 notebooks/*.npz
